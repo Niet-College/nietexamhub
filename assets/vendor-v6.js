@@ -1,4 +1,4 @@
-import{r as e,R as t}from"./ui-BL0K3Hfi.js";
+import{r as e,R as t}from"./ui-v6.js";
 /**
  * @remix-run/router v1.23.2
  *
