@@ -114,7 +114,9 @@ const normalizeExtractedData = (
       : "https://raw.githubusercontent.com/Niet-College/niet-ppt-data/main/";
 
     const processedPaths = assetPaths?.map(p => {
-      let cleanPath = p.path;
+      // Trim all string fields — raw JSON sometimes has embedded newlines
+      const cleanTeacherName = (p.teacher_name || p.faculty_name || "").replace(/[\r\n]+/g, " ").trim() || undefined;
+      let cleanPath = (p.path || "").replace(/[\r\n]+/g, "").trim();
       // Strip leading slashes
       if (cleanPath.startsWith('/')) {
         cleanPath = cleanPath.slice(1);
@@ -133,7 +135,7 @@ const normalizeExtractedData = (
       return {
         ...p,
         path: `${baseUrl}${cleanPath}`,
-        faculty_name: p.teacher_name || p.faculty_name
+        faculty_name: cleanTeacherName
       };
     }) || [];
 
@@ -145,9 +147,14 @@ const normalizeExtractedData = (
       }
     }
 
+    // Collect all unique faculty names across all paths for search
+    const allFacultyNames = [...new Set(
+      processedPaths.map(p => p.faculty_name).filter(Boolean) as string[]
+    )].join(" | ");
+
     return {
       subject_code: subjectCode,
-      subject_name: item.subject || item.subject_name || subjectCode,
+      subject_name: (item.subject || item.subject_name || subjectCode).replace(/[\r\n]+/g, " ").trim(),
       branch_code: item.branch_code || "",
       branch: item.branch || "",
       branch_normalized: item.branch_code || item.branch || "",
@@ -159,6 +166,7 @@ const normalizeExtractedData = (
       path: processedPaths.length > 0 ? processedPaths[0].path : undefined,
       filename: processedPaths.length > 0 ? processedPaths[0].filename : `${subjectCode}.pdf`,
       faculty_name: processedPaths.length > 0 ? processedPaths[0].faculty_name : undefined,
+      all_faculty_names: allFacultyNames || undefined,
       unit,
     };
   });
@@ -238,10 +246,11 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
     course: "All", semester: null, subject: "All", type: "All", searchQuery: "", ...initialFilters,
   });
 
-  // Reset papers and filters when mode changes
+  // Reset filter dropdowns when mode changes, but preserve searchQuery
+  // (searchQuery may have been set from URL params and must not be wiped here)
   useEffect(() => {
     setPapers([]);
-    setFilters({ course: "All", semester: null, subject: "All", type: "All", searchQuery: "" });
+    setFilters(prev => ({ ...prev, course: "All", semester: null, subject: "All", type: "All" }));
   }, [mode]);
 
   useEffect(() => {
@@ -291,9 +300,10 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
     if (papers.length === 0) return null;
     return new Fuse(papers, {
       keys: [
-        { name: "subject_name", weight: 0.5 },
-        { name: "subject_code", weight: 0.3 },
+        { name: "subject_name", weight: 0.4 },
+        { name: "subject_code", weight: 0.2 },
         { name: "faculty_name", weight: 0.2 },
+        { name: "all_faculty_names", weight: 0.2 },
       ],
       threshold: 0.5, includeScore: false, minMatchCharLength: 2, ignoreLocation: true,
       findAllMatches: false, useExtendedSearch: false,
@@ -325,28 +335,40 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
       }
       if (searchQuery) {
         if (parsed) {
-          if (parsed.subject && !fuzzyMatchSubject(p.subject_name, parsed.subject)) continue;
           if (parsed.semester && p.semester !== parsed.semester) continue;
+          if (parsed.subject) {
+            // Check subject name first; if that fails, check faculty names (for "Dr. X" style queries)
+            const subjectMatches = fuzzyMatchSubject(p.subject_name, parsed.subject);
+            const queryLower = parsed.subject.toLowerCase();
+            const facultyMatches =
+              (p.all_faculty_names || "").toLowerCase().includes(queryLower) ||
+              (p.faculty_name || "").toLowerCase().includes(queryLower);
+            if (!subjectMatches && !facultyMatches) continue;
+          }
         } else if (!useFuse) {
           const subject = p.subject_name || "";
           const code = p.subject_code || "";
           const faculty = p.faculty_name || "";
+          const allFaculty = p.all_faculty_names || "";
           if (searchLower.length === 1) {
             if (
               subject.charAt(0).toLowerCase() !== searchLower &&
               code.charAt(0).toLowerCase() !== searchLower &&
-              faculty.charAt(0).toLowerCase() !== searchLower
+              faculty.charAt(0).toLowerCase() !== searchLower &&
+              allFaculty.charAt(0).toLowerCase() !== searchLower
             ) {
               if (
                 !subject.toLowerCase().includes(searchLower) &&
                 !code.toLowerCase().includes(searchLower) &&
-                !faculty.toLowerCase().includes(searchLower)
+                !faculty.toLowerCase().includes(searchLower) &&
+                !allFaculty.toLowerCase().includes(searchLower)
               ) continue;
             }
           } else if (
             !subject.toLowerCase().includes(searchLower) &&
             !code.toLowerCase().includes(searchLower) &&
-            !faculty.toLowerCase().includes(searchLower)
+            !faculty.toLowerCase().includes(searchLower) &&
+            !allFaculty.toLowerCase().includes(searchLower)
           ) {
             continue;
           }

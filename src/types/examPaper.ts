@@ -19,7 +19,7 @@ export interface AssetMappingItem {
   semester?: string;
   subject_name?: string;
   filename: string;
-  type: "cop" | "exam";
+  type: "cop" | "exam" | "ppt";
   faculty_name?: string;
   teacher_name?: string;
 }
@@ -42,6 +42,7 @@ export interface NormalizedPaper {
   path?: string; // Primary path for compatibility
   filename?: string;
   faculty_name?: string;
+  all_faculty_names?: string; // All faculty names across all paths, joined by " | "
   unit?: string;
 }
 
