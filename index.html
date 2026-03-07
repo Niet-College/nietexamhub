@@ -1,31 +1,58 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NIET Exam Hub - Your Exam Papers Repository</title>
-    <meta name="description" content="Access, search, and download NIET exam papers and carry-over papers with ease. Fast search, filters, and bulk downloads." />
-    <meta name="author" content="NIET Exam Hub" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <meta property="og:title" content="NIET Exam Hub - Your Exam Papers Repository" />
-    <meta property="og:description" content="Access, search, and download exam papers with ease" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIET Exam Hub - Your Exam Papers Repository</title>
+  <meta name="description"
+    content="Access, search, and download NIET exam papers and carry-over papers with ease. Fast search, filters, and bulk downloads." />
+  <meta name="author" content="NIET Exam Hub" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    <script type="module" crossorigin src="/assets/index-v6.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/ui-v6.js">
-    <link rel="modulepreload" crossorigin href="/assets/utils-v6.js">
-    <link rel="modulepreload" crossorigin href="/assets/vendor-v6.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-akVWue3H.css">
-  </head>
+  <meta property="og:title" content="NIET Exam Hub - Your Exam Papers Repository" />
+  <meta property="og:description" content="Access, search, and download exam papers with ease" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
-  <body>
-    <div id="root"></div>
-  </body>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Lovable" />
+  <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  <script>
+    // GitHub Pages SPA path restore
+    // Reads the path encoded by 404.html and restores it via replaceState
+    (function () {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect !== location.href) {
+        history.replaceState(null, null, redirect);
+      }
+      // Also handle the ?p= param encoding from 404.html
+      var l = window.location;
+      if (l.search[1] === 'p') {
+        var decoded = l.search.slice(1).split('&').map(function (s) {
+          return s.replace(/~and~/g, '&');
+        });
+        window.history.replaceState(
+          null, null,
+          l.pathname.slice(0, -1) + (decoded[0] ? '/' + decoded[0].slice(2) : '') +
+          (decoded[1] ? '?' + decoded[1].slice(2) : '') +
+          l.hash
+        );
+      }
+    })();
+  </script>
+  <script type="module" crossorigin src="/assets/index-v6.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/ui-v6.js">
+  <link rel="modulepreload" crossorigin href="/assets/utils-v6.js">
+  <link rel="modulepreload" crossorigin href="/assets/vendor-v6.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-akVWue3H.css">
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
 </html>
