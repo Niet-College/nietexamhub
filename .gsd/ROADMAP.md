@@ -105,12 +105,12 @@
 ---
 
 ### Phase 9: UI Redesign for Faculty Names
-**Status**: ⬜ Not Started
+**Status**: ⬜ Planned
 **Objective**: Redesign `PaperCard.tsx` so that `faculty_name` is no longer rendered as a generic badge/tag, but rather displayed more prominently as authorship (e.g., "By: Dr. X") alongside or under the subject name.
 **Depends on**: Phase 8
 
 **Tasks**:
-- [ ] TBD (run /plan 9 to create)
+- [ ] Implement `9-PLAN.md` (Modify `PaperCard.tsx` JSX structure)
 
 **Verification**:
-- TBD
+- Validate visually by testing `/ppt/search` route locally

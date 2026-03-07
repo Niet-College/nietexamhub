@@ -1,7 +1,10 @@
 ## Current Position
-- **Phase**: None
-- **Task**: Phase 9 added
-- **Status**: Ready for planning
+- **Phase**: 9
+- **Task**: Planning complete
+- **Status**: Ready for execution
+
+## Plans Created
+- `9-PLAN.md` — UI Redesign for Faculty Names
 
 ## Next Steps
-1. Create PLAN for Phase 9: `/plan 9`
+1. /execute 9
