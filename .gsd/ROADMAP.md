@@ -22,13 +22,27 @@
 ---
 
 ### Phase 3: Remove Local PDF Files
-**Status**: ⬜ Not Started
+**Status**: ⬜ Completed
 **Objective**: Remove the local PDF files from the repository to reduce the project footprint, as they are now being served dynamically from GitHub.
 **Depends on**: Phase 2
 
 **Tasks**:
-- [ ] TBD (run /plan 3 to create)
+- [x] Deleted `assets/` and `public/pptx/` folders
+
+**Verification**:
+- Local size reduced
+
+---
+
+### Phase 4: Fix PDF Preview
+**Status**: ⬜ Not Started
+**Objective**: Resolve the issue where the PDF preview shows "No preview option available." We need an alternative to the Google Docs Viewer Proxy or a better way to display files from `raw.githubusercontent.com`.
+**Depends on**: Phase 2
+
+**Tasks**:
+- [ ] TBD (run /plan 4 to create)
 
 **Verification**:
 - TBD
+
 
