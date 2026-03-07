@@ -103,8 +103,8 @@ const PdfPreviewModal = ({ open, onOpenChange, pdfPath, title }: PdfPreviewModal
       <DialogContent className="max-w-[95vw] h-[92vh] p-0 flex flex-col">
         <DialogHeader className="px-6 pt-6 pb-4 border-b">
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription className="text-xs font-mono truncate">
-            {pdfPath}
+          <DialogDescription>
+            Review, preview, or download the document below.
           </DialogDescription>
         </DialogHeader>
         <div className="flex-1 overflow-hidden relative bg-muted/20 flex items-center justify-center">
@@ -126,8 +126,8 @@ const PdfPreviewModal = ({ open, onOpenChange, pdfPath, title }: PdfPreviewModal
           )}
         </div>
         <DialogFooter className="px-6 py-4 border-t flex items-center justify-between">
-          <small className="text-muted-foreground text-xs truncate flex-1 mr-4">
-            {pdfPath}
+          <small className="text-muted-foreground text-xs hidden sm:block">
+            PDF Document
           </small>
           <div className="flex gap-2">
             <Button
