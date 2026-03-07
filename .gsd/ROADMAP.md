@@ -87,3 +87,16 @@
 **Verification**:
 - [x] UI logic written to conditionally hide unknown/redundant tags
 - [x] Build passing (`npm run build` exits 0)
+
+---
+
+### Phase 8: Deep PDF Analysis & Faculty Data Extraction
+**Status**: ⬜ Not Started
+**Objective**: Clone the `niet-ppt-data` repository and perform deep analysis on the first 5 pages of the raw PPT/PDF files to extract real faculty names, teachers, and department names. Then generate an updated `ppt_asset_mapping.json` using the newly discovered metadata.
+**Depends on**: Phase 7
+
+**Tasks**:
+- [ ] TBD (run /plan 8 to create)
+
+**Verification**:
+- TBD
