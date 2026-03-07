@@ -36,7 +36,7 @@ Load for context:
   <name>Delete local static folders</name>
   <files>assets/, public/pptx/</files>
   <action>
-    Remove the `assets/` and `public/pptx/` directories locally. If they are tracked by git, ensure they are removed via `git rm -r --cached` and committed, or just `rm -rf` and add to commit.
+    Remove the `assets/` and `public/pptx/` directories locally. If they are tracked by git, ensure they are removed via `git rm -r` and committed, or just `rm -rf` and add to commit. Note `public/pptx` is inside public. Just remove the whole chunks. Note there is some `assets` folder mapping which used to be inside `public/assets` maybe. Actually the user's `du -sh assets` showed an `assets/` directory at the root. Verify this!
   </action>
   <verify>test ! -d assets && test ! -d public/pptx</verify>
   <done>Local static files removed successfully.</done>
