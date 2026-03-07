@@ -40,7 +40,9 @@ const PdfPreviewModal = ({ open, onOpenChange, pdfPath, title }: PdfPreviewModal
         .then(res => res.blob())
         .then(blob => {
           if (!active) return;
-          const url = URL.createObjectURL(blob);
+          // Force application/pdf MIME type to prevent browser from downloading octet-stream
+          const pdfBlob = new Blob([blob], { type: "application/pdf" });
+          const url = URL.createObjectURL(pdfBlob);
           setBlobUrl(url);
           setIsFetchingBlob(false);
         })
@@ -108,22 +110,11 @@ const PdfPreviewModal = ({ open, onOpenChange, pdfPath, title }: PdfPreviewModal
           </DialogDescription>
         </DialogHeader>
         <div className="flex-1 overflow-hidden relative bg-muted/20 flex items-center justify-center">
-          {isFetchingBlob ? (
-            <div className="flex flex-col items-center gap-3 text-muted-foreground w-full py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary/60" />
-              <p className="text-sm font-medium">Bypassing restrictions and loading PDF directly...</p>
-            </div>
-          ) : blobUrl ? (
-            <iframe
-              src={`${blobUrl}#view=FitH`}
-              title={title}
-              className="w-full h-full border-0 absolute inset-0"
-            />
-          ) : (
-            <div className="flex flex-col items-center gap-3 text-muted-foreground w-full py-12">
-              <p className="text-sm">Unable to preview document.</p>
-            </div>
-          )}
+          <iframe
+            src={`https://docs.google.com/gview?url=${encodeURIComponent(pdfPath)}&embedded=true`}
+            title={title}
+            className="w-full h-full border-0 absolute inset-0"
+          />
         </div>
         <DialogFooter className="px-6 py-4 border-t flex items-center justify-between">
           <small className="text-muted-foreground text-xs hidden sm:block">
