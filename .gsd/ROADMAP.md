@@ -35,14 +35,29 @@
 ---
 
 ### Phase 4: Fix PDF Preview
-**Status**: ⬜ Not Started
+**Status**: ⬜ Completed
 **Objective**: Resolve the issue where the PDF preview shows "No preview option available." We need an alternative to the Google Docs Viewer Proxy or a better way to display files from `raw.githubusercontent.com`.
 **Depends on**: Phase 2
 
 **Tasks**:
-- [ ] TBD (run /plan 4 to create)
+- [x] Converted iframe src to use Blob URLs
+- [x] Adopted Modal to Object URL Download
+
+**Verification**:
+- Previews and downloads work natively.
+
+---
+
+### Phase 5: Fix 404 Not Found on PDFs
+**Status**: ⬜ Not Started
+**Objective**: Fix the `404: Not Found` error when attempting to preview or download PDFs. This indicates the reconstructed GitHub raw URLs are slightly incorrect (e.g., missing a folder path like `assets/` or incorrect branch/repo).
+**Depends on**: Phase 4
+
+**Tasks**:
+- [ ] TBD (run /plan 5 to create)
 
 **Verification**:
 - TBD
+
 
 
