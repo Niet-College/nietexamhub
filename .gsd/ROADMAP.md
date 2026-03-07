@@ -101,3 +101,16 @@
 **Verification**:
 - [x] Run python scripts against PDFs to verify extraction accuracy
 - [x] Run `npm run build` after pushing the data objects into the codebase
+
+---
+
+### Phase 9: UI Redesign for Faculty Names
+**Status**: ⬜ Not Started
+**Objective**: Redesign `PaperCard.tsx` so that `faculty_name` is no longer rendered as a generic badge/tag, but rather displayed more prominently as authorship (e.g., "By: Dr. X") alongside or under the subject name.
+**Depends on**: Phase 8
+
+**Tasks**:
+- [ ] TBD (run /plan 9 to create)
+
+**Verification**:
+- TBD
