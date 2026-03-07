@@ -290,7 +290,11 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
   const fuseInstance = useMemo(() => {
     if (papers.length === 0) return null;
     return new Fuse(papers, {
-      keys: [{ name: "subject_name", weight: 0.6 }, { name: "subject_code", weight: 0.4 }],
+      keys: [
+        { name: "subject_name", weight: 0.5 },
+        { name: "subject_code", weight: 0.3 },
+        { name: "faculty_name", weight: 0.2 },
+      ],
       threshold: 0.5, includeScore: false, minMatchCharLength: 2, ignoreLocation: true,
       findAllMatches: false, useExtendedSearch: false,
     });
@@ -326,11 +330,24 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
         } else if (!useFuse) {
           const subject = p.subject_name || "";
           const code = p.subject_code || "";
+          const faculty = p.faculty_name || "";
           if (searchLower.length === 1) {
-            if (subject.charAt(0).toLowerCase() !== searchLower && code.charAt(0).toLowerCase() !== searchLower) {
-              if (!subject.toLowerCase().includes(searchLower) && !code.toLowerCase().includes(searchLower)) continue;
+            if (
+              subject.charAt(0).toLowerCase() !== searchLower &&
+              code.charAt(0).toLowerCase() !== searchLower &&
+              faculty.charAt(0).toLowerCase() !== searchLower
+            ) {
+              if (
+                !subject.toLowerCase().includes(searchLower) &&
+                !code.toLowerCase().includes(searchLower) &&
+                !faculty.toLowerCase().includes(searchLower)
+              ) continue;
             }
-          } else if (!subject.toLowerCase().includes(searchLower) && !code.toLowerCase().includes(searchLower)) {
+          } else if (
+            !subject.toLowerCase().includes(searchLower) &&
+            !code.toLowerCase().includes(searchLower) &&
+            !faculty.toLowerCase().includes(searchLower)
+          ) {
             continue;
           }
         }

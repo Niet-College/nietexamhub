@@ -132,12 +132,14 @@
 ---
 
 ### Phase 11: Fix Faculty Search Filtering
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Fix the search filtering logic in `useExamPapers` hook so that it indexes and successfully matches against the `faculty_name` / `teacher_name` attribute. Currently clicking a faculty name yields 0 results.
 **Depends on**: Phase 10
 
 **Tasks**:
-- [ ] TBD (run /plan 11 to create)
+- [x] Add `faculty_name` key to Fuse.js instance
+- [x] Add `faculty_name` to manual `includes()` checks
 
 **Verification**:
-- TBD
+- [x] `npm run build` exits 0
+- [x] Clicking a faculty name returns matching PPTs
