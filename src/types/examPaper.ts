@@ -21,6 +21,7 @@ export interface AssetMappingItem {
   filename: string;
   type: "cop" | "exam";
   faculty_name?: string;
+  teacher_name?: string;
 }
 
 export interface AssetMapping {
@@ -41,6 +42,7 @@ export interface NormalizedPaper {
   path?: string; // Primary path for compatibility
   filename?: string;
   faculty_name?: string;
+  unit?: string;
 }
 
 export interface FilterOptions {
@@ -74,4 +76,5 @@ export interface DisplayPaper {
   primaryPath: string;
   primaryFilename: string;
   faculty_name?: string;
+  unit?: string;
 }

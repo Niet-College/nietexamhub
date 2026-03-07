@@ -115,7 +115,7 @@ const PaperCard = ({
             {paper.course}
           </Badge>
         )}
-        {paper.year && (
+        {paper.year && paper.year !== "Unknown" && (
           <Badge variant="outline" className="text-xs">
             {paper.year}
           </Badge>
@@ -125,24 +125,31 @@ const PaperCard = ({
             {paper.semester} Semester
           </Badge>
         )}
-        {paper.branch_code && (
+        {paper.branch_code && paper.branch_code !== paper.course && paper.branch_code !== "BTech" && (
           <Badge variant="outline" className="text-xs">
             {paper.branch_code}
           </Badge>
         )}
-        {paper.branch && (
+        {paper.branch && paper.branch !== paper.course && paper.branch !== paper.branch_code && (
           <Badge variant="outline" className="text-xs">
             {paper.branch}
           </Badge>
         )}
-        {paper.faculty_name && (
+        {paper.unit && (
+          <Badge variant="default" className="text-xs bg-primary/80">
+            {paper.unit}
+          </Badge>
+        )}
+        {paper.faculty_name && paper.faculty_name !== "Unknown" && (
           <Badge variant="outline" className="text-xs">
             {paper.faculty_name}
           </Badge>
         )}
-        <Badge variant="default" className="text-xs">
-          {getTypeBadge()}
-        </Badge>
+        {(paper.type === "exam" || paper.type === "both") && !window.location.pathname.includes('/ppt') && (
+          <Badge variant="default" className="text-xs">
+            {getTypeBadge()}
+          </Badge>
+        )}
         {hasMultipleFiles && (
           <Badge variant="secondary" className="text-xs">
             {paper.paths.length} files

@@ -132,9 +132,18 @@ const normalizeExtractedData = (
 
       return {
         ...p,
-        path: `${baseUrl}${cleanPath}`
+        path: `${baseUrl}${cleanPath}`,
+        faculty_name: p.teacher_name || p.faculty_name
       };
     }) || [];
+
+    let unit = undefined;
+    if (mode === "ppt") {
+      const match = subjectCode.match(/-U(\d+)$/i);
+      if (match) {
+        unit = `Unit ${match[1]}`;
+      }
+    }
 
     return {
       subject_code: subjectCode,
@@ -149,6 +158,8 @@ const normalizeExtractedData = (
       paths: processedPaths,
       path: processedPaths.length > 0 ? processedPaths[0].path : undefined,
       filename: processedPaths.length > 0 ? processedPaths[0].filename : `${subjectCode}.pdf`,
+      faculty_name: processedPaths.length > 0 ? processedPaths[0].faculty_name : undefined,
+      unit,
     };
   });
 
@@ -215,6 +226,7 @@ const toDisplayPaper = (paper: NormalizedPaper, index: number): DisplayPaper => 
   primaryPath: paper.path || "",
   primaryFilename: paper.filename || `${paper.subject_code}.pdf`,
   faculty_name: paper.faculty_name,
+  unit: paper.unit,
 });
 
 export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
