@@ -48,10 +48,10 @@ Load for context:
 
 <verification>
 After all tasks, verify:
-- [ ] 'raw.githubusercontent.com/' is added to `path` logic.
+- [x] 'raw.githubusercontent.com/' is added to `path` logic.
 </verification>
 
 <success_criteria>
-- [ ] All tasks verified
-- [ ] Must-haves confirmed
+- [x] All tasks verified
+- [x] Must-haves confirmed
 </success_criteria>
