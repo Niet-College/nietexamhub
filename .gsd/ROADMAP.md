@@ -210,3 +210,35 @@
 - README and About page look populated.
 - Both remotes are synced.
 
+
+---
+
+### Phase 16: Populate GitHub Wiki
+**Status**: ⬜ Not Started
+**Objective**: Upload the locally generated documentation files to the GitHub Wiki.
+**Depends on**: Phase 15
+
+**Tasks**:
+- [ ] Use browser subagent to navigate to the GitHub Wiki
+- [ ] Create the Home page and upload Architecture, Appwrite-Setup, and Deployment pages.
+- [ ] Verify pages are live.
+
+**Verification**:
+- Users can view the wiki at https://github.com/Niet-College/niet-exam-hub-ui/wiki
+
+
+---
+
+### Phase 17: Fix Blank Page on Niet-College GitHub Pages Deploy
+**Status**: ⬜ Not Started
+**Objective**: Diagnose and fix the blank white screen appearing on the `nietcollege` GitHub Pages deployment.
+**Depends on**: Phase 16
+
+**Tasks**:
+- [ ] Use browser subagent to verify the blank screen and check console errors.
+- [ ] Identify if the issue is a missing Vite `base` path, incorrect React Router `basename`, or an unbuilt `index.html`.
+- [ ] Fix the issue so it deploys correctly on the subdirectory `/niet-exam-hub-ui/` without breaking the personal repo's custom domain.
+
+**Verification**:
+- Both the domain `nietexamhub.bugmein.me` and the GH Pages url `niet-college.github.io/niet-exam-hub-ui/` load the app successfully.
+
