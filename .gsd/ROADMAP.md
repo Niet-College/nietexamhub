@@ -308,3 +308,52 @@
 **Verification**:
 - Visitor counter loads correctly without SSL errors.
 
+
+---
+
+### Phase 22: Scrape NIET Previous Year Papers
+**Status**: ⬜ Not Started
+**Objective**: Create a `niet-workflow` folder and write an automated browser scraper to navigate to the NIET examination page and extract previous year papers (2024-2025).
+**Depends on**: Phase 21
+
+**Tasks**:
+- [ ] Create `niet-workflow` directory.
+- [ ] Setup a browser automation script (e.g., Playwright) configured for Chrome to scrape `https://www.niet.co.in/examination#pre-question-paper`.
+- [ ] Extract the 2024-2025 paper links.
+- [ ] Save the extracted data into a JSON file.
+
+**Verification**:
+- Script successfully navigates to the page and downloads/extracts the links.
+
+
+---
+
+### Phase 23: Fix Blank Page on Renamed Repository
+**Status**: ⬜ Not Started
+**Objective**: Diagnose and fix the blank page issue on the newly renamed Niet-College repository (`nietexamhub`).
+**Depends on**: Phase 22
+
+**Tasks**:
+- [ ] Use browser subagent to inspect the console errors at `https://niet-college.github.io/nietexamhub/`.
+- [ ] Adjust Vite and router configurations if necessary for the new repository structure.
+- [ ] Ensure proper deployment to the new `nietexamhub` repo.
+
+**Verification**:
+- The website loads properly on the new GitHub Pages URL without blank screens.
+
+
+---
+
+### Phase 24: Fix Blank Page on Renamed Repository (Again)
+**Status**: ⬜ Not Started
+**Objective**: Resolve the blank white screen remaining on `https://niet-college.github.io/nietexamhub/`.
+**Depends on**: Phase 23
+
+**Tasks**:
+- [ ] Use browser subagent to find the exact network failures on the new repo URL.
+- [ ] Fix `vite.config.ts` base path to explicitly match `/nietexamhub/`.
+- [ ] Deploy and verify the fix.
+
+**Verification**:
+- Page loads correctly.
+
