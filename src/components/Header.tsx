@@ -1,14 +1,25 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Download, Info, FileText, Presentation, Upload } from "lucide-react";
+import { Download, Info, FileText, Presentation, Upload, Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMode, type Mode } from "@/contexts/ModeContext";
 import ThemeToggle from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { useState } from "react";
 import nietLogo from "@/assets/niet-logo.png";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { mode, setMode } = useMode();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const prefix = mode === "ppt" ? "/ppt" : "/exam";
 
@@ -32,6 +43,66 @@ const Header = () => {
     const full = `${prefix}${path}`;
     return location.pathname === full;
   };
+
+  const MobileNavLinks = () => (
+    <div className="flex flex-col gap-4 mt-6">
+      <Link
+        to={`${prefix}/home`}
+        onClick={() => setMobileMenuOpen(false)}
+        className={`px-4 py-3 rounded-lg text-base font-medium transition-all ${isActive("/home")
+          ? "bg-accent text-accent-foreground"
+          : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+          }`}
+      >
+        Home
+      </Link>
+      <Link
+        to={`${prefix}/search`}
+        onClick={() => setMobileMenuOpen(false)}
+        className={`px-4 py-3 rounded-lg text-base font-medium transition-all ${isActive("/search")
+          ? "bg-accent text-accent-foreground"
+          : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+          }`}
+      >
+        {mode === "exam" ? "Search Papers" : "Search PPTs"}
+      </Link>
+      <Link
+        to={`${prefix}/about`}
+        onClick={() => setMobileMenuOpen(false)}
+        className={`px-4 py-3 rounded-lg text-base font-medium transition-all flex items-center gap-2 ${isActive("/about")
+          ? "bg-accent text-accent-foreground"
+          : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+          }`}
+      >
+        <Info className="h-5 w-5" />
+        <span>About Hub</span>
+      </Link>
+      <Link
+        to={`${prefix}/bulk-download`}
+        onClick={() => setMobileMenuOpen(false)}
+        className={`px-4 py-3 rounded-lg text-base font-medium transition-all flex items-center gap-2 ${isActive("/bulk-download")
+          ? "bg-accent text-accent-foreground"
+          : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+          }`}
+      >
+        <Download className="h-5 w-5" />
+        <span>Bulk Download</span>
+      </Link>
+      {mode === "ppt" && (
+        <Link
+          to="/ppt/upload"
+          onClick={() => setMobileMenuOpen(false)}
+          className={`px-4 py-3 rounded-lg text-base font-medium transition-all flex items-center gap-2 ${isActive("/upload")
+            ? "bg-accent text-accent-foreground"
+            : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+            }`}
+        >
+          <Upload className="h-5 w-5" />
+          <span>Upload PPT</span>
+        </Link>
+      )}
+    </div>
+  );
 
   return (
     <motion.header
@@ -59,8 +130,8 @@ const Header = () => {
           </AnimatePresence>
         </Link>
 
-        {/* Nav links */}
-        <nav className="flex items-center gap-1">
+        {/* Desktop Nav links */}
+        <nav className="hidden border-border md:flex items-center gap-1">
           <Link
             to={`${prefix}/home`}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${isActive("/home")
@@ -87,7 +158,7 @@ const Header = () => {
               }`}
           >
             <Info className="h-4 w-4" />
-            <span className="hidden sm:inline">About</span>
+            <span>About</span>
           </Link>
           <Link
             to={`${prefix}/bulk-download`}
@@ -97,7 +168,7 @@ const Header = () => {
               }`}
           >
             <Download className="h-4 w-4" />
-            <span className="hidden sm:inline">Bulk</span>
+            <span>Bulk</span>
           </Link>
           {mode === "ppt" && (
             <Link
@@ -108,14 +179,14 @@ const Header = () => {
                 }`}
             >
               <Upload className="h-4 w-4" />
-              <span className="hidden sm:inline">Upload</span>
+              <span>Upload</span>
             </Link>
           )}
         </nav>
 
-        {/* Right side — mode switcher + theme toggle */}
+        {/* Right side — mode switcher + theme toggle (Desktop) & Mobile Menu */}
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex bg-muted/50 p-1 rounded-lg border border-border">
+          <div className="hidden lg:flex bg-muted/50 p-1 rounded-lg border border-border">
             <button
               onClick={() => handleModeSwitch("exam")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${mode === "exam"
@@ -139,6 +210,57 @@ const Header = () => {
           </div>
 
           <ThemeToggle />
+
+          {/* Mobile Hamburger Menu */}
+          <div className="flex md:hidden ml-1">
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Open Menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[85vw] sm:w-[350px]">
+                <SheetHeader className="text-left">
+                  <SheetTitle className="flex items-center gap-2">
+                    <img src={nietLogo} alt="NIET Logo" className="h-6 w-6" />
+                    Navigation
+                  </SheetTitle>
+                  <SheetDescription>
+                    Switch between modes or browse application features.
+                  </SheetDescription>
+                </SheetHeader>
+
+                <div className="py-6 flex flex-col h-full">
+                  {/* Mobile Mode Switcher - side by side */}
+                  <div className="flex flex-row gap-2 p-1.5 bg-muted/50 rounded-xl border border-border">
+                    <button
+                      onClick={() => handleModeSwitch("exam")}
+                      className={`flex flex-col items-center gap-1.5 p-3 flex-1 rounded-lg text-sm font-medium transition-all ${mode === "exam"
+                        ? "bg-background shadow-md text-foreground border border-border/50"
+                        : "text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                      <FileText className="h-5 w-5" />
+                      Exams
+                    </button>
+                    <button
+                      onClick={() => handleModeSwitch("ppt")}
+                      className={`flex flex-col items-center gap-1.5 p-3 flex-1 rounded-lg text-sm font-medium transition-all ${mode === "ppt"
+                        ? "bg-blue-500/10 text-blue-600 shadow-md border border-blue-200/50"
+                        : "text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                      <Presentation className="h-5 w-5" />
+                      PPTs
+                    </button>
+                  </div>
+
+                  <MobileNavLinks />
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </motion.header>
