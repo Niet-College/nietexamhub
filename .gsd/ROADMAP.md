@@ -143,3 +143,50 @@
 **Verification**:
 - [x] `npm run build` exits 0
 - [x] Clicking a faculty name returns matching PPTs
+
+---
+
+### Phase 12: Fix Upload Functionality Network Error
+**Status**: ⬜ Not Started
+**Objective**: Fix the network error encountered when uploading files on the deployed website.
+**Depends on**: Phase 11
+
+**Tasks**:
+- [ ] Investigate cause of "network error" (likely missing env vars in prod build)
+- [ ] Fix the deployment workflow or code to connect to the backend correctly
+
+**Verification**:
+- Upload form successfully pushes data to backend instead of throwing a network error on production.
+
+
+---
+
+### Phase 13: Fix Upload "Failed to fetch" Error
+**Status**: ⬜ Not Started
+**Objective**: Diagnose and fix the "failed to fetch" error during file upload on the live site.
+**Depends on**: Phase 12
+
+**Tasks**:
+- [ ] Examine console logs on the live upload page
+- [ ] Identify if it's missing CORS, a browser privacy issue, or a missing Appwrite host setting
+- [ ] Implement fix and verify upload completes successfully.
+
+**Verification**:
+- Upload a file and verify it succeeds without "Failed to fetch".
+
+
+---
+
+### Phase 14: Add Upload Progress Bar
+**Status**: ⬜ Not Started
+**Objective**: Display a progress bar reflecting the file upload progress for both single and bulk uploads.
+**Depends on**: Phase 13
+
+**Tasks**:
+- [ ] Update `Upload.tsx` to track file upload progress from Appwrite storage.
+- [ ] Add a UI progress bar component that updates in real-time.
+- [ ] Handle progress for bulk upload across multiple files.
+
+**Verification**:
+- Users can see a smooth progress bar advancing as files are uploaded.
+

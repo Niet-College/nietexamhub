@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 
 const SEMESTERS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 const ACCEPTED = ".pdf,.ppt,.pptx";
@@ -94,6 +95,7 @@ const Upload = () => {
     const [addContributor, setAddContributor] = useState(false);
     const [contributorName, setContributorName] = useState("");
     const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     // Single file state
     const [singleFiles, setSingleFiles] = useState<DroppedFile[]>([]);
@@ -122,6 +124,7 @@ const Upload = () => {
         }
 
         setIsUploading(true);
+        setUploadProgress(0);
         try {
             // First, ensure we have an anonymous session to bypass guest restriction
             try {
@@ -137,7 +140,11 @@ const Upload = () => {
             const uploadedFile = await storage.createFile(
                 appwriteConfig.bucketId,
                 ID.unique(),
-                file
+                file,
+                [], // permissions (default)
+                (progress) => {
+                    setUploadProgress(Math.round(progress.progress));
+                }
             );
 
             // 2. Create metadata record
@@ -163,6 +170,7 @@ const Upload = () => {
                 ]
             );
 
+            setUploadProgress(100);
             toast({
                 title: "Upload successful!",
                 description: `"${file.name}" has been uploaded to the database.`,
@@ -180,6 +188,7 @@ const Upload = () => {
             });
         } finally {
             setIsUploading(false);
+            setUploadProgress(0);
         }
     };
 
@@ -194,6 +203,7 @@ const Upload = () => {
         }
 
         setIsUploading(true);
+        setUploadProgress(0);
         let successCount = 0;
         let failCount = 0;
 
@@ -215,13 +225,23 @@ const Upload = () => {
             return;
         }
 
+        const totalFiles = bulkFiles.length;
+        let currentFileIndex = 0;
+
         for (const df of bulkFiles) {
             try {
                 // 1. Upload file
                 const uploadedFile = await storage.createFile(
                     appwriteConfig.bucketId,
                     ID.unique(),
-                    df.file
+                    df.file,
+                    [], // permissions
+                    (progress) => {
+                        // Calculate overall progress across all bulk files
+                        const fileProgress = progress.progress; // 0 to 100
+                        const overallProgress = ((currentFileIndex * 100) + fileProgress) / totalFiles;
+                        setUploadProgress(Math.round(overallProgress));
+                    }
                 );
 
                 // 2. Metadata record
@@ -251,8 +271,10 @@ const Upload = () => {
                 console.error(`Failed to upload ${df.file.name}:`, error);
                 failCount++;
             }
+            currentFileIndex++;
         }
 
+        setUploadProgress(100);
         setIsUploading(false);
 
         if (failCount === 0) {
@@ -275,6 +297,7 @@ const Upload = () => {
                 setBulkFiles([]);
             }
         }
+        setUploadProgress(0);
     };
 
     return (
@@ -381,6 +404,16 @@ const Upload = () => {
                                 />
                             </div>
 
+                            {isUploading && (
+                                <div className="space-y-2">
+                                    <div className="flex justify-between text-sm font-medium text-muted-foreground">
+                                        <span>Uploading...</span>
+                                        <span>{uploadProgress}%</span>
+                                    </div>
+                                    <Progress value={uploadProgress} className="w-full" />
+                                </div>
+                            )}
+
                             <Button onClick={handleSingleUpload} disabled={isUploading} className="w-full gap-2">
                                 {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadIcon className="h-4 w-4" />}
                                 {isUploading ? "Uploading..." : "Upload File"}
@@ -415,6 +448,16 @@ const Upload = () => {
                                 <DropZone multiple={true} onDrop={(f) => setBulkFiles(toDropped(f))} files={bulkFiles} />
                             </div>
 
+                            {isUploading && (
+                                <div className="space-y-2">
+                                    <div className="flex justify-between text-sm font-medium text-muted-foreground">
+                                        <span>Uploading...</span>
+                                        <span>{uploadProgress}%</span>
+                                    </div>
+                                    <Progress value={uploadProgress} className="w-full" />
+                                </div>
+                            )}
+
                             <Button onClick={handleBulkUpload} disabled={isUploading} className="w-full gap-2">
                                 {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadIcon className="h-4 w-4" />}
                                 {isUploading ? "Uploading..." : "Upload Files"}
@@ -428,3 +471,4 @@ const Upload = () => {
 };
 
 export default Upload;
+
