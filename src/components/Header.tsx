@@ -3,6 +3,7 @@ import { Download, Info, FileText, Presentation, Upload } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMode } from "@/contexts/ModeContext";
 import ThemeToggle from "@/components/ThemeToggle";
+import nietLogo from "@/assets/niet-logo.png";
 
 const Header = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const Header = () => {
           to={`${prefix}/home`}
           className="flex items-center gap-1.5 sm:gap-2 font-semibold text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-foreground hover:text-primary transition-colors"
         >
-          <img src="/niet-logo.png" alt="NIET Logo" className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8" />
+          <img src={nietLogo} alt="NIET Logo" className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8" />
           <AnimatePresence mode="wait">
             <motion.span
               key={mode}

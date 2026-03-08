@@ -276,3 +276,20 @@
 - Successful upload shows the new toast message.
 - About page displays a visitor counter.
 
+
+---
+
+### Phase 20: Fix Logo and Move Visitor Counter
+**Status**: ⬜ Not Started
+**Objective**: Fix the broken NIET logo in the header and reposition the visitor counter to be more prominent at the top of the About page.
+**Depends on**: Phase 19
+
+**Tasks**:
+- [ ] Fix logo image path in `Header.tsx`.
+- [ ] Move visitor counter badge in `About.tsx` from the footer to a higher section.
+- [ ] Push changes and deploy to `nietcollege`.
+
+**Verification**:
+- Header logo displays correctly.
+- Visitor counter is clearly visible near the top of the About page.
+
