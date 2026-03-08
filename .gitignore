@@ -38,3 +38,5 @@ public/pptx/
 /.gemini
 /.agent 
 /trash
+.github/workflows
+.gsd

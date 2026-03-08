@@ -357,3 +357,19 @@
 **Verification**:
 - Page loads correctly.
 
+
+---
+
+### Phase 25: Clean Up Repository
+**Status**: ⬜ Not Started
+**Objective**: Untrack .github and .gsd folders, and clean up index.html.
+**Depends on**: Phase 24
+
+**Tasks**:
+- [ ] Remove legacy SPA redirect script from index.html.
+- [ ] Untrack .github/workflows and .gsd using git rm --cached.
+- [ ] Commit and push changes to both remotes.
+
+**Verification**:
+- Repository is clean of workflow directories on GitHub.
+
