@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DisplayPaper } from "@/types/examPaper";
 import { Button } from "./ui/button";
-import { Download, Eye, TrendingUp, ChevronDown, Loader2 } from "lucide-react";
+import { Download, Eye, ChevronDown, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Badge } from "./ui/badge";
+import { useMode } from "@/contexts/ModeContext";
 
 interface PaperCardProps {
   paper: DisplayPaper;
@@ -32,6 +33,7 @@ const PaperCard = ({
   const [downloadingFile, setDownloadingFile] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { mode } = useMode();
 
   const hasMultipleFiles = paper.paths.length > 1;
   const primaryPath = paper.primaryPath || (paper.paths[0]?.path || "");
@@ -115,7 +117,7 @@ const PaperCard = ({
                   className="text-sky-500 hover:text-sky-600 hover:underline transition-colors font-medium cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    const basePath = location.pathname.includes('/exam') ? '/exam/search' : '/ppt/search';
+                    const basePath = mode === "exam" ? '/exam/search' : '/ppt/search';
                     navigate(`${basePath}?search=${encodeURIComponent(paper.faculty_name)}`, {
                       replace: false,
                       state: { initialSearch: paper.faculty_name }
@@ -162,7 +164,7 @@ const PaperCard = ({
             {paper.unit}
           </Badge>
         )}
-        {paper.type && !location.pathname.includes('/ppt') && (
+        {paper.type && mode === "exam" && (
           <Badge variant="default" className="text-xs">
             {getTypeBadge()}
           </Badge>
@@ -205,7 +207,7 @@ const PaperCard = ({
                       className="cursor-pointer"
                     >
                       <Eye className="h-4 w-4 mr-2" />
-                      View: {pathItem.filename} {!location.pathname.includes('/ppt') && `(${pathItem.type === "cop" ? "COP" : "Exam"})`}
+                      View: {pathItem.filename} {mode === "exam" && `(${pathItem.type === "cop" ? "COP" : "Exam"})`}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handleDownload(pathItem.path, pathItem.filename)}
@@ -217,7 +219,7 @@ const PaperCard = ({
                       ) : (
                         <Download className="h-4 w-4 mr-2" />
                       )}
-                      {downloadingFile === pathItem.path ? "Downloading..." : `Download: ${pathItem.filename} ${!location.pathname.includes('/ppt') ? `(${pathItem.type === "cop" ? "COP" : "Exam"})` : ""}`}
+                      {downloadingFile === pathItem.path ? "Downloading..." : `Download: ${pathItem.filename} ${mode === "exam" ? `(${pathItem.type === "cop" ? "COP" : "Exam"})` : ""}`}
                     </DropdownMenuItem>
                     {index < paper.paths.length - 1 && <DropdownMenuSeparator />}
                   </div>
