@@ -1,112 +1,38 @@
-# NIET Exam Hub
+# NIET Exam & PPT Hub
 
-A comprehensive web-based platform for searching, viewing, and downloading NIET (Noida Institute of Engineering and Technology) exam papers and study materials.
+A modern, fast, and comprehensive web-based platform for searching, viewing, downloading, and uploading NIET (Noida Institute of Engineering and Technology) exam papers and study materials (PPTs).
 
 ## 🌐 Live Website
 
-**GitHub Pages:** https://iamawanishmaurya.github.io/nietexamhub/
+**Production App:** [nietexamhub.bugmein.me](https://nietexamhub.bugmein.me/)
 
 ## 📋 Overview
 
-NIET Exam Hub is a static web application that provides students with easy access to:
-- **Exam Papers** - Regular semester exam papers organized by semester and subject
-- **COP Papers** - Carry-over papers for supplementary examinations
-- **Search & Filter** - Advanced search capabilities with multiple filter options
-- **Quick Download** - Direct download and view options for all PDFs
+NIET Exam Hub was built to centralize study materials for students. Following the latest updates, it handles both PDFs (Exam/COP Papers) and PPTs (Presentations), all searchable via a blazing fast local index.
 
-## 📁 Folder Structure
+### Key Capabilities
+- **Exam Mode / PPT Mode** - Toggle seamlessly between raw previous year papers and teacher presentations.
+- **Appwrite Backend** - Users can actively upload new resources via a protected drag-and-drop UI, which saves metadata dynamically.
+- **Fuzzy Search** - Find materials instantly using `Fuse.js` (e.g. search by subject name, code, or even faculty name).
+- **Dark Mode Support** - Fully styled with TailwindCSS and `shadcn/ui` for beautiful light/dark UI themes.
+- **Single & Bulk Uploads** - Includes visual progress tracking.
 
-```
-exam_hub/
-├── index.html                  # Main web interface (PDF downloader)
-├── pdf_downloader.html         # Alternative entry point
-├── README.md                   # This file
-│
-├── assets/                     # All PDF files organized by type and semester
-│   ├── cop/                    # Carry-over papers
-│   │   ├── Semester I/
-│   │   │   ├── Subject Name 1/
-│   │   │   │   └── [PDF files]
-│   │   │   └── Subject Name 2/
-│   │   │       └── [PDF files]
-│   │   ├── Semester II/
-│   │   ├── Semester III/
-│   │   ├── Semester IV/
-│   │   ├── Semester V/
-│   │   └── Semester VI/
-│   │
-│   └── exam/                   # Regular exam papers
-│       ├── Semester I/
-│       │   ├── Subject Name 1/
-│       │   │   └── [PDF files]
-│       │   └── Subject Name 2/
-│       │       └── [PDF files]
-│       ├── Semester II/
-│       ├── Semester III/
-│       ├── Semester IV/
-│       ├── Semester V/
-│       └── Semester VI/
-│
-└── Data Files/                 # Metadata and mapping files
-    ├── extracted_data.json     # Complete metadata for all papers
-    ├── extracted_data.csv      # CSV version of metadata
-    ├── asset_mapping.json      # Maps subject codes to file paths
-    └── pdf_index_enhanced.json # Enhanced PDF index (legacy)
-```
+## 🛠️ Technology Stack
 
-## 🎯 Features
+- **Frontend:** React 18, TypeScript, Vite
+- **UI Framework:** Tailwind CSS, shadcn/ui components
+- **Icons & Animation:** Lucide React, Framer Motion
+- **Backend & Storage:** Appwrite Cloud (Database & Buckets)
+- **Search Engine:** Fuse.js
+- **Routing:** React Router v6
+- **Deployment:** GitHub Actions -> GitHub Pages
 
-### Current Features
-
-- ✅ **Advanced Search**
-  - Quick search with pattern matching (`subject:semester:year:branch`)
-  - Fuzzy matching for subject names
-  - Real-time search results
-
-- ✅ **Multi-Level Filtering**
-  - Course filter (B.Tech, M.Tech, MBA, etc.)
-  - Semester filter (I-VI)
-  - Subject name filter
-  - Type filter (Normal, COP, Exam)
-
-- ✅ **PDF Management**
-  - View PDFs in new tab
-  - Download individual files
-  - Bulk download for filtered results
-  - Multiple file support per subject
-
-- ✅ **Responsive Design**
-  - Mobile-friendly interface
-  - Modern UI with Bootstrap 5
-  - Grid and list view options
-
-- ✅ **Data Organization**
-  - 1,264+ exam papers organized
-  - 6 semesters × 2 types (COP/Exam)
-  - Subject-based folder structure
-
-## 📸 Screenshots
-
-### Exam Mode
-<div style={{ display: 'flex', gap: '10px' }}>
-  <img src="public/screenshots/exam_light.png" width="48%" alt="Exam Mode - Light" />
-  <img src="public/screenshots/exam_dark.png" width="48%" alt="Exam Mode - Dark" />
-</div>
-
-### PPT Mode
-<div style={{ display: 'flex', gap: '10px' }}>
-  <img src="public/screenshots/ppt_light.png" width="48%" alt="PPT Mode - Light" />
-  <img src="public/screenshots/ppt_dark.png" width="48%" alt="PPT Mode - Dark" />
-</div>
-
-## 🚀 Setup & Deployment
-
-### Local Development
+## 🚀 Setup & Local Development
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/iamawanishmaurya/nietexamhub.git
-   cd nietexamhub
+   git clone https://github.com/iamawanishmaurya/niet-exam-hub-ui.git
+   cd niet-exam-hub-ui
    ```
 
 2. **Install dependencies:**
@@ -114,213 +40,24 @@ exam_hub/
    npm install
    ```
 
-3. **Start development server:**
+3. **Environment Setup:**
+   *(Ensure you have your Appwrite endpoint and Project ID configured in `src/lib/appwrite.ts`)*
+
+4. **Start the development server:**
    ```bash
    npm run dev
    ```
-
-4. **Open in browser:**
-   ```
-   http://localhost:8080
-   ```
+   Open `http://localhost:8080` (or the port Vite provides) in your browser.
 
 5. **Build for production:**
    ```bash
    npm run build
    ```
+   The output will be generated in the `dist/` directory.
 
-6. **Preview production build:**
-   ```bash
-   npm run preview
-   ```
+## 🚢 Deployment
 
-### GitHub Pages Deployment
-
-1. Build the project:
-   ```bash
-   npm run build
-   ```
-
-2. The build output will be in the `dist/` folder
-3. Configure GitHub Pages to serve from the `dist/` folder or deploy the `dist/` contents to the root
-4. Go to **Settings → Pages** in your GitHub repository
-5. Source: `Deploy from a branch`
-6. Branch: `main`, Folder: `/dist` (or root if you copy dist contents)
-7. Site will be available at: `https://iamawanishmaurya.github.io/nietexamhub/`
-
-## 📊 Data Files
-
-### `extracted_data.json`
-Contains metadata for all exam papers:
-- Subject code
-- Subject name
-- Semester (I-VI)
-- Academic year
-- Course (B.Tech, M.Tech, etc.)
-- Branch and branch code
-- Type (COP, Exam, Normal)
-
-### `asset_mapping.json`
-Maps subject codes to their file paths:
-```json
-{
-  "ACSCY0401": [
-    {
-      "path": "assets/cop/Semester IV/Computer Networks/ACSCY0401.pdf",
-      "type": "cop",
-      "filename": "ACSCY0401.pdf"
-    }
-  ]
-}
-```
-
-## 🔍 Search Patterns
-
-The quick search supports flexible patterns:
-
-- `dsa` - Search for "dsa" in any field
-- `dsa:3` - Data Structures in 3rd semester
-- `dsa:3:2023` - Data Structures, 3rd semester, year 2023
-- `cyber security:3:2023:cy` - Cyber Security, 3rd sem, 2023, CY branch
-- `cyber security` - All papers from Cyber Security branch
-
-## 🛠️ Technology Stack
-
-- **Frontend:** React 18, TypeScript
-- **UI Framework:** Tailwind CSS, shadcn/ui components
-- **Build Tool:** Vite
-- **Routing:** React Router
-- **Icons:** Lucide React
-- **Animations:** Framer Motion
-- **Hosting:** GitHub Pages
-- **Data Format:** JSON, CSV
-
-## 📝 Future Enhancements
-
-### Phase 1: Study Materials (PPT/PPTX) Integration
-
-- [x] **PPT/PPTX Support**
-  - [x] Add PPT/PPTX file viewer (convert to PDF on-the-fly or use viewer)
-  - [x] Organize study materials by semester/subject/unit
-  - [x] Extract metadata from PPT files (subject, unit, semester, teacher)
-  - [x] Add study materials section to main interface
-  - [x] Create separate filter for study materials vs exam papers
-
-- [x] **Study Material Organization**
-  - [x] Create `assets/study-materials/` or similar storage
-  - [x] Organize by: `Semester X/Subject Name/Unit Y/`
-  - [x] Generate mapping file for study materials
-  - [x] Update `asset_mapping.json` (via Appwrite DB or local JSON) to include materials
-
-### Phase 2: File Upload System
-
-- [x] **Upload Interface**
-  - [x] Create upload page (`/upload`)
-  - [x] Support multiple file formats (PDF, PPT, PPTX)
-  - [x] Drag-and-drop file upload
-  - [x] Progress indicator for uploads
-  - [x] File validation (size, format, content)
-
-- [x] **Backend Processing**
-  - [x] File upload API endpoint (via Appwrite Backend-as-a-Service)
-  - [x] Automatic metadata extraction/hashing for duplicates
-  - [x] File organization into correct cloud storage buckets
-  - [x] Update JSON/DB records dynamically
-  - [x] Community Contributor recognition system
-  - [ ] Template for adding new entries to JSON files
-
-### Phase 3: Enhanced Features
-
-- [ ] **User Features**
-  - [ ] User authentication (optional)
-  - [ ] Favorite papers/bookmarks
-  - [ ] Download history
-  - [ ] Search history
-  - [ ] User contributions tracking
-
-- [ ] **Advanced Search**
-  - [ ] Full-text search within PDFs
-  - [ ] Search by teacher name
-  - [ ] Search by academic year range
-  - [ ] Advanced filter combinations
-  - [ ] Saved search queries
-
-- [ ] **Analytics & Insights**
-  - [ ] Most downloaded papers
-  - [ ] Popular subjects by semester
-  - [ ] Download statistics
-  - [ ] User activity tracking
-
-- [ ] **Content Management**
-  - [ ] Admin panel for content management
-  - [ ] Bulk file upload
-  - [ ] Metadata editing interface
-  - [ ] File organization tools
-  - [ ] Duplicate detection and removal
-
-### Phase 4: Mobile App (Future)
-
-- [ ] Native mobile app (React Native / Flutter)
-- [ ] Offline download support
-- [ ] Push notifications for new papers
-- [ ] Mobile-optimized viewing experience
-
-## 🔧 Maintenance
-
-### Adding New Papers
-
-1. Place PDF files in appropriate folder:
-   ```
-   assets/{cop|exam}/Semester {I-VI}/{Subject Name}/{filename}.pdf
-   ```
-
-2. Update `extracted_data.json` with new entry:
-   ```json
-   {
-     "subject_code": "ACSCY0401",
-     "subject_name": "Computer Networks",
-     "semester": "IV",
-     "year": "2023-2024",
-     "course": "B.Tech",
-     "branch": "Cyber Security",
-     "branch_code": "CY",
-     "type": "exam"
-   }
-   ```
-
-3. Update `asset_mapping.json`:
-   ```json
-   {
-     "ACSCY0401": [
-       {
-         "path": "assets/exam/Semester IV/Computer Networks/ACSCY0401.pdf",
-         "type": "exam",
-         "filename": "ACSCY0401.pdf"
-       }
-     ]
-   }
-   ```
-
-4. Commit and push changes:
-   ```bash
-   git add .
-   git commit -m "Add new exam papers"
-   git push
-   ```
-
-### Regenerating Asset Mapping
-
-If you need to regenerate `asset_mapping.json`:
-
-```bash
-cd /path/to/niet_exam_hub2
-python3 generate_asset_mapping.py
-cp asset_mapping.json /path/to/exam_hub/
-```
-
-## 📄 License
-
-This project is for educational purposes at NIET.
+This project uses an automated CI/CD pipeline. Pushing to the `main` branch automatically triggers a **GitHub Actions** workflow (`.github/workflows/deploy.yml`) that builds the Vite app and force-pushes the `dist/` folder to the `gh-pages` branch. The site goes live on the mapped custom domain shortly after.
 
 ## 🤝 Contributing
 
@@ -332,22 +69,11 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📞 Support
+##  Wiki
 
-For issues, questions, or suggestions:
-- Open an issue on GitHub
-- Contact: [Your Contact Information]
-
-## 📈 Statistics
-
-- **Total Exam Papers:** 1,264+ PDFs
-- **Semesters Covered:** I, II, III, IV, V, VI
-- **Paper Types:** COP (Carry-over) and Regular Exam papers
-- **Subjects:** 100+ different subjects
-- **Branches:** Multiple branches (CSE, CY, EC, ME, etc.)
+Check out our [GitHub Wiki](https://github.com/Niet-College/niet-exam-hub-ui/wiki) for more detailed documentation on architecture, API design, and contribution guidelines.
 
 ---
 
-**Last Updated:** March 2026
-**Project Status:** Active Development  
-**Version:** 1.1.0
+**Last Updated:** March 2026  
+**Project Status:** Active Development

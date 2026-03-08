@@ -190,3 +190,23 @@
 **Verification**:
 - Users can see a smooth progress bar advancing as files are uploaded.
 
+
+---
+
+### Phase 15: Documentation, UI Links, and Dual Deploy
+**Status**: ⬜ Not Started
+**Objective**: Implement documentation updates, fix tracking/ignore configurations for both repos, update the About page UI, and push correctly to both remotes.
+**Depends on**: Phase 14
+
+**Tasks**:
+- [ ] Ensure `.github/workflows` and `.gsd` are correctly ignored or tracked on the `nietcollege` remote.
+- [ ] Update README.md with comprehensive project details.
+- [ ] Create detailed Wiki pages for the project (using a Wiki repository or structured markdown).
+- [ ] Add a link/button to the GitHub Niet-College profile in the About section.
+- [ ] Push updates to both `origin` (iamawanishmaurya) and `nietcollege` (Niet-College) remotes.
+
+**Verification**:
+- Repositories reflect the correct tracked/ignored files.
+- README and About page look populated.
+- Both remotes are synced.
+
