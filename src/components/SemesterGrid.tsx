@@ -3,8 +3,11 @@ import { BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useExamPapers } from "@/hooks/useExamPapers";
 
+import { useMode } from "@/contexts/ModeContext";
+
 const SemesterGrid = () => {
   const { metadata } = useExamPapers();
+  const { mode } = useMode();
   const semesters = metadata.semesters || [];
 
   return (
@@ -20,7 +23,7 @@ const SemesterGrid = () => {
               transition={{ delay: index * 0.05 }}
             >
               <Link
-                to={`/papers?semester=${sem}`}
+                to={`/${mode}/search?semester=${sem}`}
                 className="block bg-background border border-border rounded-xl p-6 hover:shadow-lg hover:border-primary transition-all group"
               >
                 <div className="flex flex-col items-center gap-3">
@@ -31,7 +34,9 @@ const SemesterGrid = () => {
                     <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
                       Semester {sem}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1">View papers</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {mode === "ppt" ? "View PPTs" : "View papers"}
+                    </p>
                   </div>
                 </div>
               </Link>

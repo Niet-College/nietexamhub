@@ -95,7 +95,7 @@ const Papers = () => {
                 ? "Quick search: subject or subject:semester (e.g., 'cyber security', 'dsa:3')"
                 : "Search PPTs: topic, subject, or unit (e.g., 'matrices', 'unit 1')"
             }
-            showHint
+            showHint={mode === "exam" ? true : `"matrices" | "os unit 1" | "quantum computing"`}
           />
         </div>
 

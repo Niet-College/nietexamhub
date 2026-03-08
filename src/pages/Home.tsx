@@ -74,7 +74,7 @@ const Home = () => {
                 ? "Quick search: subject or subject:semester (e.g., 'cyber security', 'dsa:3')"
                 : "Search PPTs: topic, subject, or unit (e.g., 'matrices', 'unit 1')"
             }
-            showHint
+            showHint={mode === "exam" ? true : `"matrices" | "os unit 1" | "quantum computing"`}
           />
           {searchQuery.trim() && filteredPapers.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4">

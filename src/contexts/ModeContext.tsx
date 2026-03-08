@@ -26,6 +26,12 @@ export const ModeProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => setIsTransitioning(false), 1000);
     };
 
+    useEffect(() => {
+        document.title = mode === "exam"
+            ? "NIET Exam Hub - Your Exam Papers Repository"
+            : "NIET PPT Hub - Your Study Materials Repository";
+    }, [mode]);
+
     return (
         <ModeContext.Provider value={{ mode, setMode, isTransitioning, setIsTransitioning }}>
             {children}

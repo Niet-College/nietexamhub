@@ -7,11 +7,11 @@ interface SearchBarProps {
   onChange: (value: string) => void;
   onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  showHint?: boolean;
+  showHint?: boolean | string;
 }
 
-const SearchBar = ({ 
-  value, 
+const SearchBar = ({
+  value,
   onChange,
   onKeyPress,
   placeholder = "Search by subject or subject:semester (e.g., 'cyber security', 'dsa:3')...",
@@ -37,7 +37,7 @@ const SearchBar = ({
       </div>
       {showHint && (
         <div className="mt-2 text-xs text-muted-foreground italic">
-          <strong>Examples:</strong> "dsa:3" | "data structures" | "cyber security"
+          <strong>Examples:</strong> {typeof showHint === 'string' ? showHint : `"dsa:3" | "data structures" | "cyber security"`}
         </div>
       )}
     </motion.div>

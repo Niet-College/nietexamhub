@@ -162,7 +162,7 @@ const PaperCard = ({
             {paper.unit}
           </Badge>
         )}
-        {(paper.type === "exam" || paper.type === "both") && !window.location.pathname.includes('/ppt') && (
+        {(paper.type === "exam" || paper.type === "both") && !location.pathname.includes('/ppt') && (
           <Badge variant="default" className="text-xs">
             {getTypeBadge()}
           </Badge>
