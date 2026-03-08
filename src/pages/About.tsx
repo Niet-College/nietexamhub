@@ -183,7 +183,12 @@ const About = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="mt-12 text-center">
-            <p className="text-sm text-muted-foreground">Built with ❤️ for students who want to study smarter, not harder.</p>
+            <p className="text-sm text-muted-foreground mb-4">Built with ❤️ for students who want to study smarter, not harder.</p>
+            <div className="flex justify-center items-center">
+              <a href="https://hits.seeyoufarm.com">
+                <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fiamawanishmaurya.github.io%2Fniet-exam-hub-ui&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="Hits" />
+              </a>
+            </div>
           </motion.div>
         </motion.div>
       </div>

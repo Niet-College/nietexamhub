@@ -173,7 +173,9 @@ const Upload = () => {
             setUploadProgress(100);
             toast({
                 title: "Upload successful!",
-                description: `"${file.name}" has been uploaded to the database.`,
+                description: addContributor
+                    ? `"${file.name}" uploaded. Check the About page to see your name in the Hall of Fame!`
+                    : `"${file.name}" has been uploaded to the database.`,
             });
 
             setSingleFiles([]);
@@ -280,7 +282,9 @@ const Upload = () => {
         if (failCount === 0) {
             toast({
                 title: "Bulk upload complete!",
-                description: `Successfully uploaded ${successCount} files.`,
+                description: addContributor
+                    ? `Successfully uploaded ${successCount} files. Check the About page to see your name in the Hall of Fame!`
+                    : `Successfully uploaded ${successCount} files.`,
             });
             setBulkFiles([]);
             setBulkSemester("");

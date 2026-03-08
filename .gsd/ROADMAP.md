@@ -259,3 +259,20 @@
 - Theme toggle works in one click.
 - About page layout is correct.
 
+
+---
+
+### Phase 19: Add Visitor Counter and Upload Feedback
+**Status**: ⬜ Not Started
+**Objective**: Implement a visitor counter badge in the About section and update the upload success message to inform users about the contributors list.
+**Depends on**: Phase 18
+
+**Tasks**:
+- [ ] Update `Upload.tsx` to show a custom toast message after successful upload mentioning the contributors section in the About page.
+- [ ] Add a visitor counter badge (e.g., using a third-party badge service like hits.seeyoufarm.com or counter.dev) to `About.tsx`.
+- [ ] Push changes to `origin` (and manually deploy to `nietcollege` if necessary).
+
+**Verification**:
+- Successful upload shows the new toast message.
+- About page displays a visitor counter.
+
