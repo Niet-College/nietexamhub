@@ -67,7 +67,7 @@ const About = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              About NIET {mode === "exam" ? "Exam Hub" : "PPT Hub"}
+              About NIET {mode === "exam" ? "EXAM HUB" : "PPT HUB"}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
               Your one-stop solution for accessing, searching, and downloading {mode === "exam" ? "exam papers" : "study materials"} efficiently.
@@ -112,7 +112,7 @@ const About = () => {
             className="bg-background border border-border rounded-xl p-8 mb-12">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Our Mission</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              NIET Exam Hub was created to make exam preparation easier for students. We understand the importance of having
+              NIET EXAM HUB was created to make exam preparation easier for students. We understand the importance of having
               access to previous year papers and organized study materials.
             </p>
             <p className="text-muted-foreground leading-relaxed">

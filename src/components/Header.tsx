@@ -249,10 +249,10 @@ const Header = () => {
                 <SheetHeader className="text-left">
                   <SheetTitle className="flex items-center gap-2">
                     <img src={nietLogo} alt="NIET Logo" className="h-6 w-6" />
-                    Navigation
+                    <span className="font-bold text-base">{mode === "exam" ? "NIET EXAM HUB" : "NIET PPT HUB"}</span>
                   </SheetTitle>
                   <SheetDescription>
-                    Switch between modes or browse application features.
+                    Switch between modes or browse app features.
                   </SheetDescription>
                 </SheetHeader>
 
