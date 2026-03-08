@@ -72,6 +72,9 @@ const App = () => (
                 <Route path="/papers" element={<Navigate to="/exam/search" replace />} />
                 <Route path="/bulk-download" element={<Navigate to="/exam/bulk-download" replace />} />
                 <Route path="/about" element={<Navigate to="/exam/about" replace />} />
+                {/* Upload is PPT-only — redirect exam/upload and bare /upload to ppt/upload */}
+                <Route path="/exam/upload" element={<Navigate to="/ppt/upload" replace />} />
+                <Route path="/upload" element={<Navigate to="/ppt/upload" replace />} />
 
                 <Route path="*" element={<NotFound />} />
               </Routes>
