@@ -32,7 +32,9 @@ const Header = () => {
     const oldPrefix = newMode === "ppt" ? "/exam" : "/ppt";
     const newPrefix = newMode === "ppt" ? "/ppt" : "/exam";
 
-    if (currentPath.startsWith(oldPrefix)) {
+    if (currentPath.includes("/about")) {
+      navigate(`${newPrefix}/home`);
+    } else if (currentPath.startsWith(oldPrefix)) {
       navigate(currentPath.replace(oldPrefix, newPrefix));
     } else {
       navigate(`${newPrefix}/home`);
