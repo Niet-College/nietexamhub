@@ -185,7 +185,24 @@ const About = () => {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="mt-12 text-center">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }} className="mt-12">
+            <h2 className="text-2xl font-semibold text-foreground mb-6 text-center">Special Thanks</h2>
+            <p className="text-muted-foreground text-center mb-6">
+              A huge thanks to Dev Goyal for providing the study materials and resources that made this hub possible.
+            </p>
+            <div className="flex justify-center items-center">
+              <motion.a href="https://github.com/DevGoyalG/NIET-Study-Material" target="_blank" rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}
+                className="w-full sm:w-auto">
+                <Button variant="outline" className="w-full sm:w-auto gap-2 transition-all hover:bg-accent">
+                  <Github className="h-5 w-5" />
+                  <span>DevGoyalG / NIET-Study-Material</span>
+                </Button>
+              </motion.a>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} className="mt-12 text-center">
             <p className="text-sm text-muted-foreground mb-4">Built with ❤️ for students who want to study smarter, not harder.</p>
           </motion.div>
         </motion.div>
