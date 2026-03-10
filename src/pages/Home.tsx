@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
@@ -7,29 +7,47 @@ import SemesterGrid from "@/components/SemesterGrid";
 import PaperCard from "@/components/PaperCard";
 import RainEffect from "@/components/RainEffect";
 import { useExamPapers } from "@/hooks/useExamPapers";
+import { useSearchSuggestions } from "@/hooks/useSearchSuggestions";
 import { useMode } from "@/contexts/ModeContext";
 import { TrendingUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { filteredPapers, trendingPapers, loading, setFilters } = useExamPapers();
+  const { filteredPapers, allPapers, trendingPapers, loading, setFilters } = useExamPapers();
   const { mode, isTransitioning } = useMode();
   const [searchQuery, setSearchQuery] = useState("");
 
   const prefix = mode === "ppt" ? "/ppt" : "/exam";
 
+  // Autocomplete suggestions
+  const {
+    suggestions,
+    isOpen: suggestionsOpen,
+    activeIndex,
+    open: openSuggestions,
+    close: closeSuggestions,
+    handleKeyDown: suggestionsKeyDown,
+    setActiveIndex,
+  } = useSearchSuggestions(allPapers, searchQuery);
+
   useEffect(() => {
     setFilters((prev) => ({ ...prev, searchQuery }));
   }, [searchQuery, setFilters]);
 
-  const handleViewAll = () => {
+  const handleViewAll = useCallback(() => {
     navigate(`${prefix}/search`, { state: { initialSearch: searchQuery } });
-  };
+  }, [navigate, prefix, searchQuery]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchQuery.trim()) handleViewAll();
   };
+
+  const handleSuggestionSelect = useCallback((text: string) => {
+    setSearchQuery(text);
+    closeSuggestions();
+    navigate(`${prefix}/search`, { state: { initialSearch: text } });
+  }, [closeSuggestions, navigate, prefix]);
 
   if (loading) {
     return (
@@ -75,6 +93,14 @@ const Home = () => {
                 : "Search PPTs: topic, subject, or unit (e.g., 'matrices', 'unit 1')"
             }
             showHint={mode === "exam" ? true : `"matrices" | "os unit 1" | "quantum computing"`}
+            suggestions={suggestions}
+            suggestionsOpen={suggestionsOpen}
+            activeIndex={activeIndex}
+            onSuggestionSelect={handleSuggestionSelect}
+            onSuggestionsKeyDown={suggestionsKeyDown}
+            onFocus={openSuggestions}
+            onBlur={closeSuggestions}
+            onActiveIndexChange={setActiveIndex}
           />
           {searchQuery.trim() && filteredPapers.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4">

@@ -1,4 +1,4 @@
-import { useEffect, useState, useDeferredValue, startTransition } from "react";
+import { useEffect, useState, useDeferredValue, startTransition, useCallback } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
@@ -8,6 +8,7 @@ import PaperCard from "@/components/PaperCard";
 import PdfPreviewModal from "@/components/PdfPreviewModal";
 import RainEffect from "@/components/RainEffect";
 import { useExamPapers } from "@/hooks/useExamPapers";
+import { useSearchSuggestions } from "@/hooks/useSearchSuggestions";
 import { useMode } from "@/contexts/ModeContext";
 import { FileQuestion, Grid3x3, List } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -15,7 +16,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 const Papers = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const { filteredPapers, filters, setFilters, clearFilters, loading } = useExamPapers();
+  const { filteredPapers, allPapers, filters, setFilters, clearFilters, loading } = useExamPapers();
   const { mode, isTransitioning } = useMode();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewPath, setPreviewPath] = useState("");
@@ -23,6 +24,17 @@ const Papers = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchInput, setSearchInput] = useState(filters.searchQuery);
   const deferredSearchInput = useDeferredValue(searchInput);
+
+  // Autocomplete suggestions
+  const {
+    suggestions,
+    isOpen: suggestionsOpen,
+    activeIndex,
+    open: openSuggestions,
+    close: closeSuggestions,
+    handleKeyDown: suggestionsKeyDown,
+    setActiveIndex,
+  } = useSearchSuggestions(allPapers, searchInput);
 
   useEffect(() => {
     const semester = searchParams.get("semester");
@@ -53,6 +65,11 @@ const Papers = () => {
     setPreviewTitle(title);
     setPreviewOpen(true);
   };
+
+  const handleSuggestionSelect = useCallback((text: string) => {
+    setSearchInput(text);
+    closeSuggestions();
+  }, [closeSuggestions]);
 
   if (loading) {
     return (
@@ -96,6 +113,14 @@ const Papers = () => {
                 : "Search PPTs: topic, subject, or unit (e.g., 'matrices', 'unit 1')"
             }
             showHint={mode === "exam" ? true : `"matrices" | "os unit 1" | "quantum computing"`}
+            suggestions={suggestions}
+            suggestionsOpen={suggestionsOpen}
+            activeIndex={activeIndex}
+            onSuggestionSelect={handleSuggestionSelect}
+            onSuggestionsKeyDown={suggestionsKeyDown}
+            onFocus={openSuggestions}
+            onBlur={closeSuggestions}
+            onActiveIndexChange={setActiveIndex}
           />
         </div>
 
