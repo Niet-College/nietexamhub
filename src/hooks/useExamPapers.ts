@@ -243,14 +243,14 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
   const [metadata, setMetadata] = useState<PaperMetadata>({ courses: [], branches: [], branchCodes: [], semesters: [], years: [] });
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FilterOptions>({
-    course: "All", semester: null, subject: "All", type: "All", searchQuery: "", ...initialFilters,
+    course: "All", semester: null, subject: "All", type: "All", searchQuery: "", faculty: "All", unit: "All", ...initialFilters,
   });
 
   // Reset filter dropdowns when mode changes, but preserve searchQuery
   // (searchQuery may have been set from URL params and must not be wiped here)
   useEffect(() => {
     setPapers([]);
-    setFilters(prev => ({ ...prev, course: "All", semester: null, subject: "All", type: "All" }));
+    setFilters(prev => ({ ...prev, course: "All", semester: null, subject: "All", type: "All", faculty: "All", unit: "All" }));
   }, [mode]);
 
   useEffect(() => {
@@ -296,6 +296,36 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
     });
   }, [papers, filters.course]);
 
+  const availableFaculty = useMemo(() => {
+    const names = new Set<string>();
+    papers.forEach((p) => {
+      if ((!filters.semester || p.semester === filters.semester)) {
+        if (p.faculty_name?.trim()) names.add(p.faculty_name.trim());
+        if (p.all_faculty_names) {
+          for (const f of p.all_faculty_names.split("|")) {
+            const ft = f.trim();
+            if (ft) names.add(ft);
+          }
+        }
+      }
+    });
+    return Array.from(names).sort();
+  }, [papers, filters.semester]);
+
+  const availableUnits = useMemo(() => {
+    const units = new Set<string>();
+    papers.forEach((p) => {
+      if ((!filters.semester || p.semester === filters.semester) && p.unit) {
+        units.add(p.unit);
+      }
+    });
+    return Array.from(units).sort((a, b) => {
+      const numA = parseInt(a.replace(/\D/g, "")) || 0;
+      const numB = parseInt(b.replace(/\D/g, "")) || 0;
+      return numA - numB;
+    });
+  }, [papers, filters.semester]);
+
   const fuseInstance = useMemo(() => {
     if (papers.length === 0) return null;
     return new Fuse(papers, {
@@ -323,6 +353,8 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
     let result: NormalizedPaper[] = [];
     const maxResults = searchQuery.length <= 2 ? 100 : Infinity;
     let count = 0;
+    const facultyFilter = filters.faculty !== "All" ? filters.faculty : null;
+    const unitFilter = filters.unit !== "All" ? filters.unit : null;
     for (let i = 0; i < papers.length && count < maxResults; i++) {
       const p = papers[i];
       if (courseFilter && p.course !== courseFilter) continue;
@@ -333,6 +365,12 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
         if (typeFilter === "exam" && p.type !== "exam") continue;
         if (typeFilter === "both" && p.type !== "both") continue;
       }
+      if (facultyFilter) {
+        const hasFaculty = (p.faculty_name || "").trim() === facultyFilter ||
+          (p.all_faculty_names || "").split("|").some(f => f.trim() === facultyFilter);
+        if (!hasFaculty) continue;
+      }
+      if (unitFilter && p.unit !== unitFilter) continue;
       if (searchQuery) {
         if (parsed) {
           if (parsed.semester && p.semester !== parsed.semester) continue;
@@ -424,10 +462,12 @@ export const useExamPapers = (initialFilters?: Partial<FilterOptions>) => {
     trendingPapers,
     filters,
     setFilters,
-    clearFilters: () => setFilters({ course: "All", semester: null, subject: "All", type: "All", searchQuery: "" }),
+    clearFilters: () => setFilters({ course: "All", semester: null, subject: "All", type: "All", searchQuery: "", faculty: "All", unit: "All" }),
     metadata,
     availableSubjects,
     availableSemesters,
+    availableFaculty,
+    availableUnits,
     loading,
   };
 };

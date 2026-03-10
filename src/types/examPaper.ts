@@ -52,6 +52,8 @@ export interface FilterOptions {
   subject: string; // "All" or specific subject
   type: string; // "All", "exam", "cop", "both"
   searchQuery: string;
+  faculty: string; // "All" or specific faculty name (PPT mode)
+  unit: string; // "All" or specific unit (PPT mode)
 }
 
 export interface PaperMetadata {

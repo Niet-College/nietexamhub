@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useExamPapers } from "@/hooks/useExamPapers";
+import { useMode } from "@/contexts/ModeContext";
 
 interface FilterPanelProps {
   filters: FilterOptions;
@@ -12,16 +13,8 @@ interface FilterPanelProps {
 }
 
 const FilterPanel = ({ filters, onFilterChange, onClearFilters }: FilterPanelProps) => {
-  const { metadata, availableSubjects, availableSemesters } = useExamPapers();
-
-  const handleCourseChange = (course: string) => {
-    onFilterChange({
-      ...filters,
-      course,
-      semester: null, // Reset semester when course changes
-      subject: "All", // Reset subject when course changes
-    });
-  };
+  const { availableSemesters, availableFaculty, availableUnits } = useExamPapers();
+  const { mode } = useMode();
 
   const handleSemesterChange = (semester: string) => {
     onFilterChange({
@@ -30,6 +23,12 @@ const FilterPanel = ({ filters, onFilterChange, onClearFilters }: FilterPanelPro
       subject: "All", // Reset subject when semester changes
     });
   };
+
+  // Exam mode: Semester + Exam Type
+  // PPT mode: Semester + Faculty + Unit
+  const gridCols = mode === "exam"
+    ? "grid-cols-1 sm:grid-cols-2"
+    : "grid-cols-1 sm:grid-cols-3";
 
   return (
     <motion.div
@@ -51,26 +50,8 @@ const FilterPanel = ({ filters, onFilterChange, onClearFilters }: FilterPanelPro
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Course Filter */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Course</label>
-          <Select value={filters.course} onValueChange={handleCourseChange}>
-            <SelectTrigger className="border-border rounded-lg">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">All Courses</SelectItem>
-              {metadata.courses.map((course) => (
-                <SelectItem key={course} value={course}>
-                  {course}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Semester Filter */}
+      <div className={`grid ${gridCols} gap-4`}>
+        {/* Semester Filter — shown in both modes */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-muted-foreground">Semester</label>
           <Select
@@ -91,45 +72,72 @@ const FilterPanel = ({ filters, onFilterChange, onClearFilters }: FilterPanelPro
           </Select>
         </div>
 
-        {/* Subject Filter */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Subject</label>
-          <Select
-            value={filters.subject}
-            onValueChange={(value) => onFilterChange({ ...filters, subject: value })}
-          >
-            <SelectTrigger className="border-border rounded-lg">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">All Subjects</SelectItem>
-              {availableSubjects.map((subject) => (
-                <SelectItem key={subject} value={subject}>
-                  {subject}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Exam mode: Type Filter */}
+        {mode === "exam" && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-muted-foreground">Exam Type</label>
+            <Select
+              value={filters.type}
+              onValueChange={(value) => onFilterChange({ ...filters, type: value })}
+            >
+              <SelectTrigger className="border-border rounded-lg">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Types</SelectItem>
+                <SelectItem value="exam">Exam</SelectItem>
+                <SelectItem value="cop">COP</SelectItem>
+                <SelectItem value="both">Both</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
-        {/* Type Filter */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Type</label>
-          <Select
-            value={filters.type}
-            onValueChange={(value) => onFilterChange({ ...filters, type: value })}
-          >
-            <SelectTrigger className="border-border rounded-lg">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">All</SelectItem>
-              <SelectItem value="exam">Exam</SelectItem>
-              <SelectItem value="cop">COP</SelectItem>
-              <SelectItem value="both">Both</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {/* PPT mode: Faculty Filter */}
+        {mode === "ppt" && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-muted-foreground">Faculty</label>
+            <Select
+              value={filters.faculty}
+              onValueChange={(value) => onFilterChange({ ...filters, faculty: value })}
+            >
+              <SelectTrigger className="border-border rounded-lg">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Faculty</SelectItem>
+                {availableFaculty.map((name) => (
+                  <SelectItem key={name} value={name}>
+                    {name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        {/* PPT mode: Unit Filter */}
+        {mode === "ppt" && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-muted-foreground">Unit</label>
+            <Select
+              value={filters.unit}
+              onValueChange={(value) => onFilterChange({ ...filters, unit: value })}
+            >
+              <SelectTrigger className="border-border rounded-lg">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Units</SelectItem>
+                {availableUnits.map((unit) => (
+                  <SelectItem key={unit} value={unit}>
+                    {unit}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
     </motion.div>
   );
